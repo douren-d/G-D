@@ -1,5 +1,5 @@
 <template>
-  <div class="home_container">
+  <div id="home" class="home_container">
     <!-- 页头 -->
     <header class="header">
       <top-menu></top-menu>
@@ -30,14 +30,28 @@ export default {
     Login
   },
   data() {
-    return {};
+    return {
+      windowHeight: "",
+      windowWidth: ""
+    };
+  },
+  created() {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+  },
+  watch: {
+    windowHeight() {
+      const home = document.getElementById("home");
+      home.style.height = window.innerHeight + "px";
+      home.style.width = window.innerWidth + "px";
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 $home_width: 1920px;
-$home_height: 1259px;
+$home_height: 1080px;
 $header_height: 44px;
 input,
 button {

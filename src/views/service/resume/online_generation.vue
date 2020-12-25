@@ -1,8 +1,8 @@
 <template>
   <div id="grid" class="onlin-container">
     <div class="online" @mousedown="mousedownEvent">
-      <div data-index="diy-button" data-class="design">按钮</div>
-      <div data-index="2">2</div>
+      <div data-index="custom-text" data-class="design">按钮</div>
+      <div data-index="custom-divider" data-class="design">tabs</div>
       <div data-index="3">3</div>
     </div>
     <grid-layout
@@ -30,7 +30,7 @@
         @resized="resizedEvent"
         @moved="movedEvent"
       >
-        <component :is="currentComponent" class="diy"></component>
+        <component :is="item.i" class="diy"></component>
       </grid-item>
     </grid-layout>
   </div>
@@ -38,13 +38,14 @@
 
 <script>
 import { GridLayout, GridItem } from "vue-grid-layout";
-import customText from "@/components/custom/customText.vue";
+import { customText, customDivider } from "@/components/custom";
 export default {
   name: "online",
   components: {
     GridLayout,
     GridItem,
-    customText
+    customText,
+    customDivider
   },
   data() {
     return {
@@ -52,6 +53,7 @@ export default {
       mouseFlag: false,
       gridWidth: "",
       modelProperty: {},
+      gridItemPropertyTemp: {},
       gridItemProperty: {}
     };
   },
@@ -76,7 +78,7 @@ export default {
     mousedownEvent(e) {
       this.mouseFlag = true;
       const parent = document.getElementById("grid");
-      const model = document.createElement("input");
+      const model = document.createElement("div");
       this.modelProperty = {
         id: e.target.dataset.index,
         className: e.target.dataset.class
@@ -121,13 +123,16 @@ export default {
 
         //清零
         model.remove();
+        this.gridItemPropertyTemp = this.modelProperty;
         this.modelProperty = {};
       };
     }
   },
   computed: {
     currentComponent: function() {
-      return "customText";
+      console.log(this.layout);
+      console.log(this.gridItemPropertyTemp.id);
+      return this.gridItemPropertyTemp.id;
     }
   }
 };
